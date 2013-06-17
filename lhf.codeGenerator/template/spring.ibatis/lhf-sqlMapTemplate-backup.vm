@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+#if(${class.tableDesc})
+<!-- ${class.tableDesc} TABLE SQL-MAP -->
+#end
+#macro( comma )
+#foreach( ${column} in ${COLUMNS} )
+#if( $velocityCount == 1 )
+${column.COLUMN_NAME} #if(${column.COLUMN_COMMENTS})	/* ${column.COLUMN_COMMENTS} */#end
+#else
+
+ 	     , ${column.COLUMN_NAME}#if(${column.COLUMN_COMMENTS})	/* ${column.COLUMN_COMMENTS} */#end
+#end
+#end
+#end
+#macro ( where )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+#if( $velocityCount == 1 )
+WHERE ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#else
+        AND  ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#end
+#else
+#if( $velocityCount == 1 )
+WHERE <isNotNull property="${att.name?cap_first}" >  ${column.COLUMN_NAME} = #${att.name?cap_first}# </isNotNull>
+#else
+        <isNotNull property="${att.name?cap_first}" prepend="AND" >  ${column.COLUMN_NAME} = #${att.name?cap_first}# </isNotNull>
+#end
+#end
+#end
+#end
+#macro ( dynamicPK )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+	<isNotEmpty property="${att.name?cap_first}" prepend="AND">
+			${column.COLUMN_NAME} = #${att.name?cap_first}#
+	</isNotEmpty>
+#end
+#end
+#end
+#macro ( wherePK )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+#if( $velocityCount == 1 )
+${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#else
+       AND ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#end
+#end
+#end
+#end
+#macro ( onlyPK )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+#if( $velocityCount == 1 )
+${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#else
+	   AND ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#end
+#end
+#end
+#end
+<sqlMap namespace="${class.programId}">
+
+	<typeAlias alias="${class.name?cap_first}" type="${class.packageName}.domain.${class.name?cap_first}" />
+
+	<resultMap id="${class.name?cap_first}-resultMap" class="${class.name?cap_first}">
+#foreach( ${column} in ${COLUMNS} )
+		<result column="${column.COLUMN_NAME}" property="${att.name?cap_first}" />		<!-- ${column.COLUMN_COMMENT} -->
+#end
+	</resultMap>
+
+	<!-- 단건 조회 -->
+	<select id="select${class.name?cap_first}" parameterClass="map" resultMap="${class.name?cap_first}-resultMap">
+	<![CDATA[ /* ${class.programId}.select${class.name?cap_first} */ ]]>
+	SELECT #comma()
+
+	  FROM ${TABLENAME}
+  	 WHERE #onlyPK()
+	</select>
+
+	<!-- 조건에 의한 조회 -->
+	<select id="select${class.name?cap_first}List" parameterClass="map" resultClass="${class.name?cap_first}-resultMap">
+	<![CDATA[ /* ${class.programId}.select${class.name?cap_first}List */ ]]>
+	SELECT #comma()
+
+	  FROM ${TABLENAME}
+	<dynamic prepend="WHERE">
+	#dynamicPK()
+	</dynamic>
+	</select>
+
+	<!-- MODEL로 추가-->
+	<insert id="insert${class.name?cap_first}" parameterClass="${class.name?cap_first}">
+	<![CDATA[ /* ${class.programId}.insert${class.name?cap_first} */ ]]>
+	INSERT INTO ${TABLENAME}
+	(
+     	#comma()
+
+	)
+	VALUES
+	(
+#foreach( ${column} in ${COLUMNS} )
+	    #if( $velocityCount != 1 ), #end${SHARP}${att.name?cap_first}${SHARP}
+#end
+
+	)
+	</insert>
+
+	<!-- MODEL로 수정 -->
+	<update id="update${class.name?cap_first}" parameterClass="${class.name?cap_first}">
+	<![CDATA[ /* ${class.programId}.update${class.name?cap_first} */ ]]>
+     UPDATE ${TABLENAME}
+#foreach( ${column} in ${NO_PK_COLUMNS} )
+
+      #if( $velocityCount == 1 ) SET ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP} #else    , ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}#end
+#end
+
+	  WHERE #wherePK()
+	</update>
+
+	<!-- MODEL로 삭제	-->
+	<delete id="delete${class.name?cap_first}" parameterClass="${class.name?cap_first}">
+	<![CDATA[ /* ${class.programId}.delete${class.name?cap_first} */ ]]>
+	DELETE FROM ${TABLENAME}
+	#if ( ${IS_PK_EXIST} == 'N' )
+	#where()
+	#else
+ WHERE #wherePK()
+	#end
+
+	</delete>
+
+	<!-- 조건에 의한 삭제 -->
+	<delete id="delete${class.name?cap_first}List" parameterClass="map">
+	<![CDATA[ /* ${class.programId}.delete${class.name?cap_first}List */ ]]>
+	DELETE FROM ${TABLENAME}
+	<dynamic prepend="WHERE">
+	#dynamicPK()
+	</dynamic>
+	</delete>
+
+</sqlMap>

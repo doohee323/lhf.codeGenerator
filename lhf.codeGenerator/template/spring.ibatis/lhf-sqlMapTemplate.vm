@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+#if(${class.tableDesc})
+<!--************************************************************************************
+* 프로그램 : ${class.programId}
+* 설    명 :
+* 작 성 자 :
+* 작성일자 : ${currentDate}
+* SQL 목록
+***************************************************************************************
+* SQLID                 설명
+***************************************************************************************
+* select${class.name?cap_first}
+* select${class.name?cap_first}List
+* insert${class.name?cap_first}
+* update${class.name?cap_first}
+* delete${class.name?cap_first}
+* delete${class.name?cap_first}List
+*************************************************************************************-->
+#end
+#macro( comma )
+#foreach( ${column} in ${COLUMNS} )
+#if( ${column.COLUMN_NAME} != "OGG_CD" &&  ${column.COLUMN_NAME} != "OGG_TIME" )
+#if( $velocityCount == 1 )
+#if( ${column.DATA_TYPE} == "DATE")
+TO_CHAR(A.${column.COLUMN_NAME},'YYYYMMDDHH24MISS') AS ${column.COLUMN_NAME}
+#else
+A.${column.COLUMN_NAME}
+#end
+#else
+#if( ${column.DATA_TYPE} == "DATE")
+	     , TO_CHAR(A.${column.COLUMN_NAME},'YYYYMMDDHH24MISS') AS ${column.COLUMN_NAME}
+#else
+ 	     , A.${column.COLUMN_NAME}
+#end
+#end
+#end
+#end
+#end
+#macro( comma2 )
+#foreach( ${column} in ${COLUMNS} )
+#if( $velocityCount == 1 )
+   ${column.COLUMN_NAME} #if(${column.COLUMN_COMMENTS})	/* ${column.COLUMN_COMMENTS} */#end
+#else
+
+ 	     , ${column.COLUMN_NAME}#if(${column.COLUMN_COMMENTS})	/* ${column.COLUMN_COMMENTS} */#end
+#end
+#end
+#end
+#macro ( where )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+#if( $velocityCount == 1 )
+WHERE A.${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#else
+        A.AND  ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#end
+#else
+#if( $velocityCount == 1 )
+WHERE <isNotNull property="${att.name?cap_first}" >  A.${column.COLUMN_NAME} = #${att.name?cap_first}# </isNotNull>
+#else
+		<isNotNull property="${att.name?cap_first}" prepend="AND" >  A.${column.COLUMN_NAME} = #${att.name?cap_first}# </isNotNull>
+#end
+#end
+#end
+#end
+#macro ( dynamicPK )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+		<isNotEmpty property="${att.name?cap_first}" prepend="AND">
+			${column.COLUMN_NAME} = #${att.name?cap_first}#
+		</isNotEmpty>
+#end
+#end
+#end
+#macro ( dynamicPK_A )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+		<isNotEmpty property="${att.name?cap_first}" prepend="AND">
+			A.${column.COLUMN_NAME} = #${att.name?cap_first}#
+		</isNotEmpty>
+#end
+#end
+#end
+#macro ( wherePK )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+#if( $velocityCount == 1 )
+${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#else
+       AND ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#end
+#end
+#end
+#end
+#macro ( onlyPK )
+#foreach( ${column} in ${COLUMNS} )
+#if ( ${column.PK} )
+#if( $velocityCount == 1 )
+A.${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#else
+	   AND A.${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}
+#end
+#end
+#end
+#end
+<sqlMap namespace="${class.programId}">
+
+	<!-- ${class.tableDesc} 단건 조회 -->
+	<select id="select${class.name?cap_first}" parameterClass="map" resultClass="${class.packageName}.domain.${class.name?cap_first}">
+	<![CDATA[ /* ${class.programId}.select${class.name?cap_first} */ ]]>
+	SELECT #comma()
+
+	  FROM ${TABLENAME} A
+  	 WHERE #onlyPK()
+	</select>
+
+	<!-- 조건에 의한 ${class.tableDesc} 조회 -->
+	<select id="select${class.name?cap_first}List" parameterClass="map" resultClass="${class.packageName}.domain.${class.name?cap_first}">
+	<![CDATA[ /* ${class.programId}.select${class.name?cap_first}List */ ]]>
+	SELECT #comma()
+
+	  FROM ${TABLENAME} A
+	<dynamic prepend="WHERE">
+	#dynamicPK_A()
+	</dynamic>
+	</select>
+
+	<!-- ${class.tableDesc} 추가-->
+	<insert id="insert${class.name?cap_first}" parameterClass="${class.packageName}.domain.${class.name?cap_first}">
+	<![CDATA[ /* ${class.programId}.insert${class.name?cap_first} */ ]]>
+	INSERT INTO ${TABLENAME}
+	(
+     	#comma2()
+
+	)
+	VALUES
+	(
+#foreach( ${column} in ${COLUMNS} )
+	    #if( $velocityCount == 1 )  ${SHARP}${att.name?cap_first}${SHARP}#else, #if(${column.COLUMN_NAME}=="FST_REG_DT" || ${column.COLUMN_NAME}=="FNL_EDIT_DT")SYSDATE #else${SHARP}${att.name?cap_first}${SHARP}#end#end
+
+#end
+
+	)
+	</insert>
+
+	<!-- ${class.tableDesc} 수정 -->
+	<update id="update${class.name?cap_first}" parameterClass="${class.packageName}.domain.${class.name?cap_first}">
+	<![CDATA[ /* ${class.programId}.update${class.name?cap_first} */ ]]>
+     UPDATE ${TABLENAME}
+#foreach( ${column} in ${NO_PK_COLUMNS} )
+
+      #if( $velocityCount == 1 ) #if(${column.COLUMN_NAME}=="FST_REG_DT"||${column.COLUMN_NAME}=="FST_REG_USER_ID")#else SET ${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP} #end#else    #if(${column.COLUMN_NAME}=="FST_REG_DT"||${column.COLUMN_NAME}=="FST_REG_USER_ID")#else, #if(${column.COLUMN_NAME}=="FNL_EDIT_DT")${column.COLUMN_NAME} = SYSDATE#else${column.COLUMN_NAME} = ${SHARP}${att.name?cap_first}${SHARP}#end#end#end
+#end
+
+	  WHERE #wherePK()
+	</update>
+
+	<!-- ${class.tableDesc} 삭제 -->
+	<delete id="delete${class.name?cap_first}" parameterClass="${class.packageName}.domain.${class.name?cap_first}">
+	<![CDATA[ /* ${class.programId}.delete${class.name?cap_first} */ ]]>
+	DELETE FROM ${TABLENAME}
+	#if ( ${IS_PK_EXIST} == 'N' )
+	#where()
+	#else
+ WHERE #wherePK()
+	#end
+
+	</delete>
+
+	<!-- 조건에 의한 ${class.tableDesc} 삭제 -->
+	<delete id="delete${class.name?cap_first}List" parameterClass="map">
+	<![CDATA[ /* ${class.programId}.delete${class.name?cap_first}List */ ]]>
+	DELETE FROM ${TABLENAME}
+	<dynamic prepend="WHERE">
+	#dynamicPK()
+	</dynamic>
+	</delete>
+
+</sqlMap>

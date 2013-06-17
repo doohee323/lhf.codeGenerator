@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="EUC-KR" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MDMM1010">
+
+  <typeAlias alias="mdmm" type="com.lhf.md.mdmm.mdmm10.domain.Mdmm"/>
+
+	<resultMap id="rmMdmm" class="java.util.HashMap">
+    	<result column="MTRIL_CL_SYSTM_CODE" property="mtrilClSystmCode" />
+	</resultMap>
+
+<select id="retrieveMdmm" resultClass="rmMdmm" parameterClass="java.util.Map">
+<![CDATA[ /* MDMM1010.retrieveMdmm */ ]]>
+ <![CDATA[
+ 	SELECT A.MTRIL_CL_SYSTM_CODE FROM MD_MM_MTRIL_CL_SYSTM A, MD_MM_MTRIL_CL_SYSTM_NM B WHERE 1=1 AND A.MTRIL_CL_SYSTM_CODE = B.MTRIL_CL_SYSTM_CODE AND A.CL_SE_CODE = B.CL_SE_CODE
+  ]]>
+ </select>
+ 
+</sqlMap>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="EUC-KR" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SYA0101">
+
+  <typeAlias alias="couser" type="com.lhf.sy.sya.sya01.domain.CoUser"/>
+
+	<resultMap id="rmCoUser" class="java.util.HashMap">
+    	<result column="NUM" property="num" />
+    	<result column="NAME" property="name" />
+    	<result column="BIRTHDATE" property="birthdate" />
+    	<result column="SSN" property="ssn" />
+    	<result column="SEX" property="sex" />
+    	<result column="TELEPHONE" property="telephone" />
+    	<result column="ADDRESS" property="address" />
+    	<result column="POSTAL" property="postal" />
+    	<result column="SKILL_CODE" property="skillCode" />
+    	<result column="JOBLEVEL_CODE" property="joblevelCode" />
+    	<result column="DEPARTMENT_CODE" property="departmentCode" />
+    	<result column="ATCH_FILE_BUNCH_NO" property="atchFileBunchNo" />
+    	<result column="ATCH_FILE_BUNCH_NO2" property="atchFileBunchNo2" />
+    	<result column="ELAP_ID" property="elapId" />
+	</resultMap>
+
+<select id="retrieveCoUser" resultClass="rmCoUser" parameterClass="java.util.Map">
+<![CDATA[ /* SYA0101.retrieveCoUser */ ]]>
+ <![CDATA[
+ 	SELECT emp.num,        emp.name,        emp.birthdate,        emp.ssn,        emp.sex,        emp.telephone,        emp.address,        emp.postal,        emp.skill_code,        emp.joblevel_code,        emp.department_code,        emp.atch_file_bunch_no,        emp.atch_file_bunch_no2,        job.name as job,        org.name as department,        skill.name as skill,    	   elap_id    FROM UIP_EMPLOYEE emp        LEFT JOIN UIP_JOBLEVEL job    ON (emp.joblevel_code = job.code)        LEFT JOIN UIP_DEPARTMENT org ON (emp.department_code = (org.div_code || org.code))        LEFT JOIN UIP_SKILL skill     ON (emp.skill_code = skill.code)
+  ]]>
+ </select>
+ 
+</sqlMap>

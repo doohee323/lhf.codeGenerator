@@ -1,0 +1,96 @@
+     <Dataset id="ds_CoUser" preload="true" firefirstcount="0" firenextcount="0" useclientlayout="true" updatecontrol="true" enableevent="true">
+        <ColumnInfo>
+		  <Column id="num" size="256" type="STRING" />
+		  <Column id="name" size="256" type="STRING" />
+		  <Column id="birthdate" size="256" type="STRING" />
+		  <Column id="ssn" size="256" type="STRING" />
+		  <Column id="sex" size="256" type="STRING" />
+		  <Column id="telephone" size="256" type="STRING" />
+		  <Column id="address" size="256" type="STRING" />
+		  <Column id="postal" size="256" type="STRING" />
+		  <Column id="skillCode" size="256" type="STRING" />
+		  <Column id="joblevelCode" size="256" type="STRING" />
+		  <Column id="departmentCode" size="256" type="STRING" />
+		  <Column id="atchFileBunchNo" size="256" type="STRING" />
+		  <Column id="atchFileBunchNo2" size="256" type="STRING" />
+		  <Column id="elapId" size="256" type="STRING" />
+        </ColumnInfo>
+      </Dataset>
+  
+    <Bind>
+	<BindItem id="item1" compid="div_Main.edt_Num" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item2" compid="div_Main.edt_Name" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item3" compid="div_Main.edt_Birthdate" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item4" compid="div_Main.edt_Ssn" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item5" compid="div_Main.edt_Sex" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item6" compid="div_Main.edt_Telephone" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item7" compid="div_Main.edt_Address" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item8" compid="div_Main.edt_Postal" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item9" compid="div_Main.edt_SkillCode" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item10" compid="div_Main.edt_JoblevelCode" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item11" compid="div_Main.edt_DepartmentCode" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item12" compid="div_Main.edt_AtchFileBunchNo" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item13" compid="div_Main.edt_AtchFileBunchNo2" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+	<BindItem id="item14" compid="div_Main.edt_ElapId" propid="value" datasetid="ds_CoUser" columnid="CoUser"/>	
+    </Bind>
+     
+	<Grid id="grd_List" taborder="8" binddataset="ds_CoUser" autoenter="select" useinputpanel="false" autofittype="col" position="absolute 0 96 989 564">
+          <Formats>
+            <Format id="default">
+              <Columns>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+		  		<Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="20"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="checkbox" edittype="checkbox" text="0"/>
+		  		<Cell col="1" text="NUM"/>
+		  		<Cell col="2" text="NAME"/>
+		  		<Cell col="3" text="BIRTHDATE"/>
+		  		<Cell col="4" text="SSN"/>
+		  		<Cell col="5" text="SEX"/>
+		  		<Cell col="6" text="TELEPHONE"/>
+		  		<Cell col="7" text="ADDRESS"/>
+		  		<Cell col="8" text="POSTAL"/>
+		  		<Cell col="9" text="SKILL_CODE"/>
+		  		<Cell col="10" text="JOBLEVEL_CODE"/>
+		  		<Cell col="11" text="DEPARTMENT_CODE"/>
+		  		<Cell col="12" text="ATCH_FILE_BUNCH_NO"/>
+		  		<Cell col="13" text="ATCH_FILE_BUNCH_NO2"/>
+		  		<Cell col="14" text="ELAP_ID"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="checkbox" edittype="checkbox" expr="expr:v_ChkGrdList[currow]"/>
+		  		<Cell col="1" edittype="text" text="bind:num" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="2" edittype="text" text="bind:name" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="3" edittype="text" text="bind:birthdate" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="4" edittype="text" text="bind:ssn" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="5" edittype="text" text="bind:sex" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="6" edittype="text" text="bind:telephone" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="7" edittype="text" text="bind:address" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="8" edittype="text" text="bind:postal" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="9" edittype="text" text="bind:skillCode" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="10" edittype="text" text="bind:joblevelCode" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="11" edittype="text" text="bind:departmentCode" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="12" edittype="text" text="bind:atchFileBunchNo" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="13" edittype="text" text="bind:atchFileBunchNo2" editautoselect="true" editlengthunit="utf8"/>
+		  		<Cell col="14" edittype="text" text="bind:elapId" editautoselect="true" editlengthunit="utf8"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
