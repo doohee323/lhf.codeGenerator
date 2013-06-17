@@ -10,12 +10,6 @@ https://sites.google.com/site/pbfsup/gongjisahang/gong-yusoseujadongsaengseongdo
 
 아래의 환경설정 정보에 쿼리를 입력하면 쿼리를 분석하여 필요한 소스를 생성해 줍니다.
 
-아래의 경로에서 소스 자동 생성 도구를 활용할 수 있습니다.
-
-svn 경로에서 lhf.codeGenerator 프로젝트를 받습니다.
-
-http://oa.homelinux.com:8081/svn/lhf
-
 아래와 같은 소스가 자동으로 생성됩니다.
 
 CoUser.java
@@ -45,4 +39,7 @@ PACKAGENAME : model의 패키지 경로 풀패키지 경로를 적어 주고 out
 
 
 ## Developing
+
+- Oracle Object 분석
+- Freemarker
 
