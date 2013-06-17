@@ -4,6 +4,8 @@
 
 Spring MVC + Oracle IBATIS + Xplatform(RIA) 환경에서 개발 시 소스를 자동으로 생성해주는 프로그램
 
+https://sites.google.com/site/pbfsup/gongjisahang/gong-yusoseujadongsaengseongdogu
+
 ## Usage
 
 아래의 환경설정 정보에 쿼리를 입력하면 쿼리를 분석하여 필요한 소스를 생성해 줍니다.
