@@ -1,5 +1,5 @@
 # lhf.codeGenerator
-  lhf sub project 1
+  lhf sub project 2
 
 ## Objective
 
